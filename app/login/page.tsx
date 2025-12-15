@@ -33,10 +33,10 @@ export default function LoginPage() {
                 <button
                     onClick={handleLogin}
                     disabled={loading}
-                    className="flex w-full items-center justify-center gap-3 rounded-lg bg-white px-4 py-3 text-black transition-all hover:bg-gray-200 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 font-medium"
+                    className="flex w-full items-center justify-center gap-3 rounded-lg bg-gray-700 px-4 py-3 text-white transition-all hover:bg-gray-600 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 font-medium border border-gray-600"
                 >
                     {loading ? (
-                        <span className="h-5 w-5 animate-spin rounded-full border-2 border-black border-t-transparent" />
+                        <span className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
                     ) : (
                         <>
                             <svg className="h-5 w-5" viewBox="0 0 24 24">

@@ -101,7 +101,7 @@ export default function Home() {
             <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center font-bold text-white shadow-lg shadow-blue-500/20 group-hover:shadow-blue-500/40 transition-shadow">
               W
             </div>
-            <span className="text-xl font-bold tracking-tight text-gray-100">Workflow<span className="text-blue-400">Sunder</span></span>
+            <span className="text-xl font-bold tracking-tight text-gray-100"><span className="text-blue-400">Sunder's</span>Workflow</span>
           </div>
 
           <div className="flex items-center gap-6">
