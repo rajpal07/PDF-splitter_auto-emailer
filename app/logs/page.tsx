@@ -71,7 +71,7 @@ export default async function LogsPage() {
                                     {jobLogs.length > 0 ? jobLogs.map((job) => (
                                         <tr key={job.id} className="hover:bg-gray-800/30 transition-colors group">
                                             <td className="px-6 py-4 whitespace-nowrap font-mono text-gray-500">
-                                                {new Date(job.created_at).toLocaleString()}
+                                                {new Date(job.created_at).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}
                                             </td>
                                             <td className="px-6 py-4 font-medium text-blue-300 flex items-center gap-2">
                                                 <FileText className="h-4 w-4 opacity-50" />
@@ -122,7 +122,7 @@ export default async function LogsPage() {
                                     {loginLogs.length > 0 ? loginLogs.map((log) => (
                                         <tr key={log.id} className="hover:bg-gray-800/20 transition-colors">
                                             <td className="px-6 py-3 whitespace-nowrap font-mono">
-                                                {new Date(log.login_at).toLocaleString()}
+                                                {new Date(log.login_at).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}
                                             </td>
                                             <td className="px-6 py-3">{log.email}</td>
                                             <td className="px-6 py-3 font-mono text-xs">{log.ip}</td>
