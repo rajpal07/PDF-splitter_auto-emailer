@@ -12,6 +12,23 @@ export async function GET(request: Request) {
         const supabase = await createClient()
         const { error } = await supabase.auth.exchangeCodeForSession(code)
         if (!error) {
+            const { data: { user } } = await supabase.auth.getUser()
+
+            if (user) {
+                // Get IP and User Agent
+                // Note: 'x-forwarded-for' is standard for proxies like Vercel
+                const ip = request.headers.get('x-forwarded-for') || 'unknown'
+                const userAgent = request.headers.get('user-agent') || 'unknown'
+
+                // Log the login
+                await supabase.from('login_logs').insert({
+                    user_id: user.id,
+                    email: user.email!,
+                    ip: ip,
+                    user_agent: userAgent
+                })
+            }
+
             return NextResponse.redirect(`${origin}${next}`)
         } else {
             console.error('Auth Code Exchange Error:', error)

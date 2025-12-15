@@ -17,8 +17,8 @@ A robust Next.js application designed to automate the splitting of PDF bills and
 
 -   **Frontend**: Next.js 15 (React 19), Tailwind CSS, Lucide React
 -   **Backend**: Next.js API Routes, Nodemailer (Gmail API)
--   **PDF Processing**: `pdf-lib`
--   **Data Processing**: `csv-parse`
+-   **PDF Processing**: `pdf-lib` (Splitting & Manipulation)
+-   **Data Processing**: `csv-parse` (Extracting Flat/Name/Email)
 -   **Auth**: Supabase (Google OAuth)
 -   **Utilities**: `jszip` for archives
 
@@ -77,12 +77,18 @@ This project is optimized for deployment on Vercel.
 -   `legacy_scripts`: Original Python scripts (preserved for reference).
 
 ## 💡 Usage Guide
-
 1.  **Login**: Sign in with your Google Account.
-2.  **Upload**:
-    -   **PDF**: The master bill file containing all pages.
-    -   **CSV**: A list of residents with columns for `Flat No` (Index 1) and `Email` (Index 6).
-3.  **Customize**: Update the email subject/body template if needed.
+2.  **Upload Files**:
+    -   **PDF**: The master bill file containing all pages (1 page per flat).
+    -   **CSV**: A contact list with the following required column structure:
+        -   **Column B (Index 1)**: Flat Number (e.g., "101")
+        -   **Column D (Index 3)**: Owner Name (e.g., "John Doe")
+        -   **Column G (Index 6)**: Email Address (e.g., "john@example.com")
+3.  **Customize Email**:
+    -   Subject/Body supports placeholders:
+        -   `{flatNo}`: Replaced with Flat Number.
+        -   `{flat_owner_name}`: Replaced with the Owner Name from CSV.
+        -   `{pdf name}`: Replaced with the filename (e.g., "Bill-101.pdf").
 4.  **Process**: Click "Start Processing".
 5.  **Review**: See real-time logs of emails sent.
 6.  **Download**: Optionally download the Zip backup.

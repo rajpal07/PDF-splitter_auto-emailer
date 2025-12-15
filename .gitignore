@@ -54,3 +54,6 @@ Desktop.ini
 .vscode/
 *.swp
 *.swo
+# User Data
+*.pdf
+*.csv

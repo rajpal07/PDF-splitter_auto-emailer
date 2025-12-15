@@ -77,9 +77,22 @@ export async function POST(request: Request) {
 
             const pdfBase64 = Buffer.from(pdfBytes).toString('base64')
 
-            // 5. Compose Email
-            const subject = emailSubjectTpl.replace(/{flatNo}/g, flatNo)
-            const bodyText = emailBodyTpl.replace(/{flatNo}/g, flatNo)
+            // 5. Get Owner Name from CSV (Column D / Index 3)
+            // Based on row[1] = FlatNo, row[2] = Floor, so row[3] = Name
+            const flatOwnerName = row[3]?.trim() || "Resident"
+
+            // 6. Compose Email
+            const subject = emailSubjectTpl
+                .replace(/{flatNo}/g, flatNo)
+                .replace(/{flat_owner_name}/g, flatOwnerName)
+                .replace(/{pdf name}/g, filename)
+                .replace(/{pdf_name}/g, filename)
+
+            const bodyText = emailBodyTpl
+                .replace(/{flatNo}/g, flatNo)
+                .replace(/{flat_owner_name}/g, flatOwnerName)
+                .replace(/{pdf name}/g, filename)
+                .replace(/{pdf_name}/g, filename)
 
             const messageParts = [
                 `From: me`,
@@ -124,6 +137,19 @@ export async function POST(request: Request) {
         let zipBase64 = null
         if (downloadZip) {
             zipBase64 = await zip.generateAsync({ type: 'base64' })
+        }
+
+        // 7. Log the Job
+        if (pdfFile && csvFile) {
+            await supabase.from('workflow_jobs').insert({
+                user_id: session.user.id,
+                pdf_filename: pdfFile.name,
+                csv_filename: csvFile.name,
+                email_subject_template: emailSubjectTpl,
+                total_processed: results.length,
+                success_count: results.filter(r => r.status === 'SENT').length,
+                error_count: results.filter(r => r.status === 'ERROR').length,
+            })
         }
 
         return NextResponse.json({

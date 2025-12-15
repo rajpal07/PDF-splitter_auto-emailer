@@ -14,7 +14,7 @@ export default function Home() {
   const router = useRouter()
 
   const [emailSubject, setEmailSubject] = useState<string>('Flat No-{flatNo} - Lift Repair Bill - Dec Yr 2025-26')
-  const [emailBody, setEmailBody] = useState<string>('Please see attached your society Lift upgrade-Repair fund Bill Dec Yr 2025-26.')
+  const [emailBody, setEmailBody] = useState<string>('Dear {flat_owner_name},\nBelow is your scoiety\'s {pdf name}')
   const [filenamePattern, setFilenamePattern] = useState<string>('Flat no{flatNo} - Lift Repair Bill Dec\'25.pdf')
   const [downloadZip, setDownloadZip] = useState<boolean>(false)
 
@@ -53,7 +53,13 @@ export default function Home() {
         body: formData
       })
 
-      const data = await res.json()
+      const text = await res.text()
+      let data
+      try {
+        data = JSON.parse(text)
+      } catch (e) {
+        throw new Error(`Server Response (not JSON): ${text.substring(0, 200)}`)
+      }
 
       if (!res.ok) throw new Error(data.error || 'Unknown error')
 
@@ -103,6 +109,12 @@ export default function Home() {
               <span className="text-xs text-gray-500 font-medium uppercase tracking-wider">Signed in as</span>
               <span className="text-sm text-gray-300 font-semibold">{userEmail}</span>
             </div>
+            <a
+              href="/logs"
+              className="px-4 py-2 rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-white transition-all font-medium text-sm border border-gray-700 hover:border-gray-600"
+            >
+              Logs
+            </a>
             <button onClick={handleSignOut} className="rounded-full p-2.5 hover:bg-gray-800 text-gray-400 hover:text-white transition-all hover:rotate-90 active:scale-95">
               <LogOut className="h-5 w-5" />
             </button>
@@ -217,6 +229,7 @@ export default function Home() {
                   rows={3}
                   className="w-full bg-gray-950 border border-gray-800 rounded-lg px-4 py-3 text-gray-200 focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 outline-none transition-all resize-y"
                 />
+                <p className="text-xs text-gray-600">Available placeholders: <code className="text-blue-400">{'{flatNo}'}</code>, <code className="text-blue-400">{'{flat_owner_name}'}</code>, <code className="text-blue-400">{'{pdf name}'}</code>.</p>
               </div>
 
               <div className="md:col-span-2 flex items-center gap-3 p-4 bg-gray-950 rounded-xl border border-gray-800/50">
