@@ -6,6 +6,7 @@ import { collection, query, where, orderBy, limit, getDocs } from 'firebase/fire
 import { LogOut, UploadCloud, FileText, CheckCircle, AlertCircle, Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState, useRef, useEffect } from 'react'
+import WhatsAppPanel from '@/components/WhatsAppPanel'
 
 interface LoginLog {
   id: string
@@ -343,6 +344,8 @@ export default function Home() {
           </div>
         </div>
       </main>
+
+      <WhatsAppPanel pdfFile={pdfFile} />
     </div>
   )
 }

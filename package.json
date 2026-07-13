@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "whatsapp": "cd public/whatsapp-server && npm install --no-audit --no-fund && node server.js"
   },
   "dependencies": {
     "firebase": "^11.0.0",

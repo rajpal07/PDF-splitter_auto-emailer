@@ -107,6 +107,28 @@ This project is optimized for deployment on Vercel.
 5.  **Review**: See real-time logs of emails sent.
 6.  **Download**: Optionally download the Zip backup.
 
+## 📱 WhatsApp Sending (Baileys)
+
+Split PDFs can also be sent on WhatsApp via a small **local companion server** (Baileys — WhatsApp Web protocol, no browser needed). It cannot run on Vercel (serverless kills persistent WebSocket connections), so it runs on the PC where you use the site.
+
+### How it works
+1. Open the **WhatsApp bar** at the bottom of the main page and expand it.
+2. If the server isn't running, click **Install WhatsApp** — it downloads `install-whatsapp.bat`. Double-click it: **no Node.js needed** — if the PC has none, the script downloads a portable Node runtime (~30 MB, into `%USERPROFILE%\sunder-whatsapp\node`, no admin), then installs and starts the server on `http://localhost:3900`. Re-running the file just starts the server. Windows 10 (1803+) / 11 — uses the built-in `curl` + `tar`.
+   - If the PC already has Node, the repo can instead run `npm run whatsapp`.
+3. Scan the QR shown in the panel (WhatsApp → Settings → Linked devices → Link a device).
+4. Once connected, upload the **WhatsApp contacts CSV**: columns `Flat owner name, Email, WhatsApp number` (header row optional). Row *N* maps to PDF page *N* — same convention as the email flow.
+5. Click **Send PDFs on WhatsApp**. Progress, sent count, and per-number failures (with errors) show in the panel.
+
+### Dashboard
+`http://localhost:3900` — connection status, QR, logout/reset session, and settings (message delays, default country code, caption template).
+
+### Anti-ban rate limiting
+Messages are sent with a **randomized 8–15 s pause** between each (configurable in the dashboard). Guidelines to avoid WhatsApp flagging the number:
+- Keep volume modest: a few hundred messages/day max; much less for a fresh number (warm it up over ~1–2 weeks).
+- Recipients who have your number saved / reply to you dramatically reduce ban risk.
+- Don't lower the delay below ~5 s for bulk sends; the caption varies per recipient (`{name}`) which also helps.
+- Numbers are verified via `onWhatsApp` before sending, so non-WhatsApp numbers are skipped, not blasted.
+
 ## 🔥 Firebase Configuration
 
 ### Firestore Collections

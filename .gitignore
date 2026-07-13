@@ -60,3 +60,12 @@ Desktop.ini
 
 # Firebase service account keys (NEVER commit these!)
 *-firebase-adminsdk-*.json
+
+# WhatsApp local server runtime artifacts
+public/whatsapp-server/node_modules/
+public/whatsapp-server/auth_info/
+public/whatsapp-server/package-lock.json
+
+# OMC tooling state (not part of the app)
+.omc/
+**/.omc/
